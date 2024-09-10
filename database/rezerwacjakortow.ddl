@@ -1,0 +1,15 @@
+CREATE TABLE Korty (ID_kort int IDENTITY NOT NULL, Status_kort bit NOT NULL, PRIMARY KEY (ID_kort));
+CREATE TABLE Rezerwacje (ID_rezerwacja int IDENTITY NOT NULL, [Start] datetime NOT NULL, Koniec datetime NOT NULL, ID_konto int NOT NULL, ID_kort int NOT NULL, Imię varchar(50) NULL, Nazwisko varchar(50) NULL, [Numer telefonu] varchar(15) NULL, PRIMARY KEY (ID_rezerwacja));
+CREATE TABLE Aplikacja_sesje (ID_sesja int IDENTITY NOT NULL, ID_konto int NULL, Sesja_Data_Godzina_Start datetime NOT NULL, Sesja_Data_Godzina_Koniec datetime NOT NULL, PRIMARY KEY (ID_sesja));
+CREATE TABLE [Aplikacja Sesja_Korty] ([Aplikacja SesjaID] int NOT NULL, [Aplikacja SesjaIndex] int NOT NULL, Korty int NULL, PRIMARY KEY ([Aplikacja SesjaID], [Aplikacja SesjaIndex]));
+CREATE TABLE [Aplikacja Sesja_Rezerwacje] ([Aplikacja SesjaID] int NOT NULL, [Aplikacja SesjaIndex] int NOT NULL, Rezerwacje int NULL, PRIMARY KEY ([Aplikacja SesjaID], [Aplikacja SesjaIndex]));
+CREATE TABLE [Aplikacja Sesja_Konta] ([Aplikacja SesjaID] int NOT NULL, [Aplikacja SesjaIndex] int NOT NULL, Konta int NULL, PRIMARY KEY ([Aplikacja SesjaID], [Aplikacja SesjaIndex]));
+CREATE TABLE Pracownicy (ID_konto int IDENTITY NOT NULL, Imie varchar(60) NOT NULL, Nazwisko varchar(60) NOT NULL, Nr_tel varchar(15) NOT NULL, Data_urodzenia date NOT NULL, Miejscowosc varchar(60) NOT NULL, Kod_pocztowy varchar(6) NOT NULL, Ulica varchar(60) NULL, Numer_lokalu varchar(10) NOT NULL, Haslo varchar(30) NOT NULL, Uprawnienia_flaga tinyint NOT NULL, PRIMARY KEY (ID_konto));
+CREATE TABLE Klienci (ID_konto int IDENTITY NOT NULL, Ilosc_rezerwacji int NOT NULL, Imie varchar(60) NOT NULL, Nazwisko varchar(60) NOT NULL, Nr_tel varchar(15) NOT NULL UNIQUE, Haslo varchar(30) NOT NULL, Uprawnienia_flaga tinyint NOT NULL, PRIMARY KEY (ID_konto));
+ALTER TABLE [Aplikacja Sesja_Korty] ADD CONSTRAINT [FKAplikacja 308648] FOREIGN KEY ([Aplikacja SesjaID]) REFERENCES Aplikacja_sesje (ID_sesja);
+ALTER TABLE [Aplikacja Sesja_Rezerwacje] ADD CONSTRAINT [FKAplikacja 632331] FOREIGN KEY ([Aplikacja SesjaID]) REFERENCES Aplikacja_sesje (ID_sesja);
+ALTER TABLE [Aplikacja Sesja_Konta] ADD CONSTRAINT [FKAplikacja 304780] FOREIGN KEY ([Aplikacja SesjaID]) REFERENCES Aplikacja_sesje (ID_sesja);
+ALTER TABLE Rezerwacje ADD CONSTRAINT FKRezerwacje17559 FOREIGN KEY (ID_kort) REFERENCES Korty (ID_kort);
+ALTER TABLE Rezerwacje ADD CONSTRAINT FKRezerwacje788352 FOREIGN KEY (ID_konto) REFERENCES Klienci (ID_konto);
+ALTER TABLE Aplikacja_sesje ADD CONSTRAINT FKAplikacja_55833 FOREIGN KEY (ID_konto) REFERENCES Klienci (ID_konto);
+ALTER TABLE Aplikacja_sesje ADD CONSTRAINT FKAplikacja_292615 FOREIGN KEY (ID_konto) REFERENCES Pracownicy (ID_konto);
